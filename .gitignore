@@ -19,5 +19,6 @@ Temp
 *.pidb
 *.sln
 build
+/obj
 
 
