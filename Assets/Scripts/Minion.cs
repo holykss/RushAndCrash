@@ -34,12 +34,16 @@ class State
 
 public class Minion : MonoBehaviour {
 
-	public AnimationClip idle;
-	public AnimationClip walk;
-	public AnimationClip attack;
-	public AnimationClip damaged;
-	public AnimationClip dead;
+	[System.Serializable]
+	public class AnimationSet {
+		public AnimationClip idle;
+		public AnimationClip walk;
+		public AnimationClip attack;
+		public AnimationClip damaged;
+		public AnimationClip dead;
+	}
 
+	public AnimationSet animationSet;
 	public Animation animationBody;
 
 
@@ -57,7 +61,7 @@ public class Minion : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		animationBody.clip = walk;
+		animationBody.clip = animationSet.walk;
 		animationBody.Play();
 	}
 	

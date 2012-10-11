@@ -1233,11 +1233,12 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2da0423cecbfee34b90ed716a85f8613, type: 1}
   m_Name: 
-  idle: {fileID: 7400002, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
-  walk: {fileID: 7400004, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
-  attack: {fileID: 7400022, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
-  damaged: {fileID: 7400012, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
-  dead: {fileID: 7400020, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
+  animationSet:
+    idle: {fileID: 7400002, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
+    walk: {fileID: 7400004, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
+    attack: {fileID: 7400022, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
+    damaged: {fileID: 7400012, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
+    dead: {fileID: 7400020, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
   animationBody: {fileID: 11100000}
 --- !u!137 &13700000
 SkinnedMeshRenderer:
