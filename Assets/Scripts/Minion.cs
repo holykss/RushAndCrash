@@ -1,6 +1,37 @@
 using UnityEngine;
 using System.Collections;
 
+
+class State
+{
+	public bool changeTo(State newState)
+	{
+		if (onEnd())
+		{
+			if (newState.onBegin())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public bool onBegin()
+	{
+		return true;
+	}
+
+	public bool onUpdate()
+	{
+		return true;
+	}
+
+	public bool onEnd()
+	{
+		return true;
+	}
+}
+
 public class Minion : MonoBehaviour {
 
 	public AnimationClip idle;
@@ -11,9 +42,22 @@ public class Minion : MonoBehaviour {
 
 	public Animation animationBody;
 
+
+	private class StateIdle : State
+	{
+		public bool onBegin()
+		{
+			//animationBody.clip = walk;
+			//animationBody.Play();
+			return true;
+		}
+	}
+
+	private State state;
+
 	// Use this for initialization
 	void Start () {
-		animationBody.clip = damaged;
+		animationBody.clip = walk;
 		animationBody.Play();
 	}
 	
