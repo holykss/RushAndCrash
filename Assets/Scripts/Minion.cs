@@ -1,21 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-
 class State
 {
-	public bool changeTo(State newState)
-	{
-		if (onEnd())
-		{
-			if (newState.onBegin())
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public bool onBegin()
 	{
 		return true;
@@ -32,6 +19,34 @@ class State
 	}
 }
 
+
+class StateManager
+{
+	State _state;
+
+	public StateManager()
+	{
+		_state = new State();
+	}
+
+	public bool changeTo(State newState)
+	{
+		if (_state.onEnd())
+		{
+			if (newState.onBegin())
+			{
+				_state = newState;
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+
+}
+
+
 public class Minion : MonoBehaviour {
 
 	[System.Serializable]
@@ -46,18 +61,35 @@ public class Minion : MonoBehaviour {
 	public AnimationSet animationSet;
 	public Animation animationBody;
 
-
-	private class StateIdle : State
+	class MinionState : State
 	{
-		public bool onBegin()
+		private Minion _parent;
+		public Minion parent
 		{
-			//animationBody.clip = walk;
-			//animationBody.Play();
+			get { return _parent; }
+		}
+	
+
+		public MinionState(Minion parent)
+		{
+			_parent = parent;
+		}
+	}
+
+	class StateIdle : MinionState
+	{
+		public StateIdle(Minion parent) : base(parent)
+		{}
+
+		public new bool onBegin()
+		{
+			parent.animationBody.clip = parent.animationSet.walk;
+			parent.animationBody.Play();
 			return true;
 		}
 	}
 
-	private State state;
+	private StateManager _state;
 
 	// Use this for initialization
 	void Start () {
@@ -65,13 +97,11 @@ public class Minion : MonoBehaviour {
 		NavMeshAgent navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
 		navMeshAgent.destination = GameObject.Find("golem").transform.position;
 		
-		animationBody.clip = animationSet.walk;
-		animationBody.Play();
+		_state.changeTo(new StateIdle(this));
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
-	
 }
