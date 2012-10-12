@@ -89,7 +89,7 @@ public class Minion : MonoBehaviour {
 		}
 	}
 
-	private StateManager _state;
+	private StateManager _state = new StateManager();
 
 	// Use this for initialization
 	void Start () {
