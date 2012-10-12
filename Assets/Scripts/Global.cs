@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Global : MonoBehaviour {
 
-	public GameObject spartanKing = null;
+	public GameObject minion = null;
 	private bool mouseDrag = false;
 	
 
@@ -56,14 +56,15 @@ public class Global : MonoBehaviour {
 	
 	void generationMinion()
 	{
-		if (spartanKing != null && Input.GetMouseButtonUp(0))
+		if (minion != null && Input.GetMouseButtonUp(0))
 		{
+			Debug.Log("create Minion)");
 			Ray ray = Camera.mainCamera.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hitInfo = new RaycastHit();
 
 			if (Physics.Raycast(ray, out hitInfo))
 			{
-				Instantiate(spartanKing, hitInfo.point, transform.rotation);
+				Instantiate(minion, hitInfo.point, transform.rotation);
 			}
 		}
 	}

@@ -61,6 +61,10 @@ public class Minion : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		
+		NavMeshAgent navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
+		navMeshAgent.destination = GameObject.Find("golem").transform.position;
+		
 		animationBody.clip = animationSet.walk;
 		animationBody.Play();
 	}
