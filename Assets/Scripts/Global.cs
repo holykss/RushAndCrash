@@ -57,6 +57,7 @@ public class Global : MonoBehaviour {
 		}	
 	}
 	
+	
 	void generationMinion()
 	{
 		if (minion != null && Input.GetMouseButtonUp(0))
@@ -75,7 +76,5 @@ public class Global : MonoBehaviour {
 	void updateGui()
 	{
 		minionCount.text = "minionCount : " + GameObject.FindGameObjectsWithTag("MINION").Length;
-	}
-
-	
+	}	
 }
