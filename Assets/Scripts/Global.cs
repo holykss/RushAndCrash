@@ -2,9 +2,11 @@ using UnityEngine;
 using System.Collections;
 
 public class Global : MonoBehaviour {
-
+	
+	public UILabel minionCount = null;
 	public GameObject minion = null;
 	private bool mouseDrag = false;
+	
 	
 
 	// Use this for initialization
@@ -16,6 +18,7 @@ public class Global : MonoBehaviour {
 	void Update () {
 		
 		input();
+		updateGui();
 	}
 	
 	void input()
@@ -67,6 +70,11 @@ public class Global : MonoBehaviour {
 				Instantiate(minion, hitInfo.point, transform.rotation);
 			}
 		}
+	}
+	
+	void updateGui()
+	{
+		minionCount.text = "minionCount : " + GameObject.FindGameObjectsWithTag("MINION").Length;
 	}
 
 	
