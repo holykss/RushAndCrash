@@ -1,56 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
-class State
+public class Minion : MonoBehaviour
 {
-	public bool onBegin()
-	{
-		return true;
-	}
-
-	public bool onUpdate()
-	{
-		return true;
-	}
-
-	public bool onEnd()
-	{
-		return true;
-	}
-}
-
-
-class StateManager
-{
-	State _state;
-
-	public StateManager()
-	{
-		_state = new State();
-	}
-
-	public bool changeTo(State newState)
-	{
-		if (_state.onEnd())
-		{
-			if (newState.onBegin())
-			{
-				_state = newState;
-				return true;
-			}
-		}
-		return false;
-	}
-
-
-
-}
-
-
-public class Minion : MonoBehaviour {
 
 	[System.Serializable]
-	public class AnimationSet {
+	public class AnimationSet
+	{
 		public AnimationClip idle;
 		public AnimationClip walk;
 		public AnimationClip attack;
@@ -68,7 +24,7 @@ public class Minion : MonoBehaviour {
 		{
 			get { return _parent; }
 		}
-	
+
 
 		public MinionState(Minion parent)
 		{
@@ -76,32 +32,37 @@ public class Minion : MonoBehaviour {
 		}
 	}
 
-	class StateIdle : MinionState
+	class StateGotoGoal : MinionState
 	{
-		public StateIdle(Minion parent) : base(parent)
-		{}
+		public StateGotoGoal(Minion parent)
+			: base(parent)
+		{ }
 
-		public new bool onBegin()
+		public override bool onBegin()
 		{
 			parent.animationBody.clip = parent.animationSet.walk;
 			parent.animationBody.Play();
+
+			NavMeshAgent navMeshAgent = parent.gameObject.GetComponent<NavMeshAgent>();
+			if (navMeshAgent != null)
+				navMeshAgent.destination = GameObject.Find("golem").transform.position;
+
+
 			return true;
 		}
 	}
 
-	private StateManager _state = new StateManager();
+	private State.Manager _state = new State.Manager();
 
 	// Use this for initialization
-	void Start () {
-		
-		NavMeshAgent navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
-		navMeshAgent.destination = GameObject.Find("golem").transform.position;
-		
-		_state.changeTo(new StateIdle(this));
+	void Start()
+	{
+		_state.changeTo(new StateGotoGoal(this));
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-	
+	void Update()
+	{
+
 	}
 }

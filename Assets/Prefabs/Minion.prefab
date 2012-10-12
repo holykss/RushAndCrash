@@ -1238,7 +1238,7 @@ MonoBehaviour:
     idle: {fileID: 7400002, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
     walk: {fileID: 7400004, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
     attack: {fileID: 7400022, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
-    damaged: {fileID: 7400014, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
+    damaged: {fileID: 7400016, guid: 8ba535c70bbcf7b46b0cba1188faae47, type: 3}
     dead: {fileID: 7400018, guid: 608191cf3aeaa85419bb4558fccb064b, type: 3}
   animationBody: {fileID: 11100000}
 --- !u!137 &13700000
