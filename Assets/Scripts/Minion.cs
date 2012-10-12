@@ -73,4 +73,5 @@ public class Minion : MonoBehaviour {
 	void Update () {
 	
 	}
+	
 }
