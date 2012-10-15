@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class Minion : MonoBehaviour
+public partial class Minion : MonoBehaviour
 {
+	private float range = 10.0f;
 
 	[System.Serializable]
 	public class AnimationSet
@@ -16,7 +17,33 @@ public class Minion : MonoBehaviour
 
 	public AnimationSet animationSet;
 	public Animation animationBody;
-	
+
+	private State.Manager _state = new State.Manager();
+
+
+	// Use this for initialization
+	void Start()
+	{
+		_state.changeTo(new StateGotoGoal(this));
+	}
+
+	// Update is called once per frame
+	void Update()
+	{
+		if (_state != null)
+		{
+			_state.update();
+		}
+	}
+
+	public void attack(GameObject target)
+	{
+		_state.changeTo(new StateAttack(this, target));
+	}
+}
+
+public partial class Minion
+{
 	class MinionState : State
 	{
 		private Minion _parent;
@@ -24,7 +51,6 @@ public class Minion : MonoBehaviour
 		{
 			get { return _parent; }
 		}
-
 
 		public MinionState(Minion parent)
 		{
@@ -50,18 +76,43 @@ public class Minion : MonoBehaviour
 
 			return true;
 		}
+
+		public override bool onUpdate()
+		{
+			GameObject golem = GameObject.Find("golem");
+			Vector3 golemPosition = golem.transform.position;
+
+			float distance = (golemPosition - parent.transform.position).sqrMagnitude;
+			if (distance <= parent.range)
+			{
+				parent.attack(golem);
+			}
+
+			return true;
+		}
 	}
 
-	private State.Manager _state = new State.Manager();
-
-	// Use this for initialization
-	void Start()
+	class StateAttack : MinionState
 	{
-		_state.changeTo(new StateGotoGoal(this));
-	}
+		private GameObject _target;
 
-	// Update is called once per frame
-	void Update()
-	{
+		public StateAttack(Minion parent, GameObject target)
+			: base(parent)
+		{
+			_target = target;
+		}
+
+		public override bool onBegin()
+		{
+			NavMeshAgent navMeshAgent = parent.gameObject.GetComponent<NavMeshAgent>();
+
+			if (navMeshAgent != null)
+				navMeshAgent.Stop();
+
+
+			parent.transform.LookAt(_target.transform);
+			parent.animationBody.CrossFade(parent.animationSet.attack.name, 0.2f);
+			return true;
+		}
 	}
 }

@@ -24,6 +24,11 @@ public class State
 			}
 			return false;
 		}
+
+		public bool update()
+		{
+			return _state.onUpdate();
+		}
 	}
 
 	public virtual bool onBegin()
