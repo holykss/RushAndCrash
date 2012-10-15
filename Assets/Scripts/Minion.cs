@@ -16,7 +16,7 @@ public class Minion : MonoBehaviour
 
 	public AnimationSet animationSet;
 	public Animation animationBody;
-
+	
 	class MinionState : State
 	{
 		private Minion _parent;
@@ -63,6 +63,5 @@ public class Minion : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-
 	}
 }
