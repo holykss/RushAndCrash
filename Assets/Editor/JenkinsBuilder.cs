@@ -15,7 +15,7 @@ class JenkinsBuilder
 	static void PerformAndroidBuild()
 	{
 		string target_dir = APP_NAME + ".app";
-		GenericBuild(SCENES, TARGET_DIR + "/" + target_dir, BuildTarget.StandaloneWindows, BuildOptions.None);
+		GenericBuild(SCENES, TARGET_DIR + "/" + target_dir, BuildTarget.WebPlayer, BuildOptions.None);
 	}
 
 	private static string[] FindEnabledEditorScenes()
