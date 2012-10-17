@@ -9,7 +9,7 @@ class JenkinsBuilder
 	static string[] SCENES = FindEnabledEditorScenes();
 
 	static string APP_NAME = "RushAndCrash";
-	static string TARGET_DIR = "target";
+	static string TARGET_DIR = "";
 
 	[MenuItem("Custom/CI/Build Android")]
 	static void PerformAndroidBuild()
