@@ -5,15 +5,7 @@ public class Global : MonoBehaviour {
 	
 	public UILabel minionCount = null;
 	public GameObject minion = null;
-	private bool mouseDrag = false;
-	
-	
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
 	// Update is called once per frame
 	void Update () {
 		
@@ -24,53 +16,77 @@ public class Global : MonoBehaviour {
 	void input()
 	{
 		//camera zoom
-		if(Input.GetAxis("Mouse ScrollWheel") < 0)
+		updateZoomInOut();
+
+		updateTouch();
+	}
+
+	private static void updateZoomInOut()
+	{
+		if (Input.GetAxis("Mouse ScrollWheel") < 0)
 		{
 			Camera.main.fieldOfView += 2;
 		}
-		else if(Input.GetAxis("Mouse ScrollWheel") > 0)
+		else if (Input.GetAxis("Mouse ScrollWheel") > 0)
 		{
 			Camera.main.fieldOfView -= 2;
 		}
-		
-		//camara drag
-		bool mouseLButton = Input.GetMouseButton(0);
-		
-		if(mouseLButton)
-		{
-			Vector3 position = new Vector3(Input.GetAxis("Mouse X"), 0, Input.GetAxis("Mouse Y"));
-			Debug.Log("position : " + position.ToString());
-			Camera.main.transform.position -= position;
-				
-			float distance = (new Vector3(0, 0, 0) - position).sqrMagnitude;
-			Debug.Log("distance : " + distance.ToString());
-			
-			if(distance >= 0.01f)
-				mouseDrag = true;
-		}
-		else
-		{
-			if(mouseDrag == false)
-				generationMinion();	
-			
-			mouseDrag = false;
-		}	
 	}
-	
-	
-	void generationMinion()
+
+	Vector3 _startRayPosition = Vector3.zero;
+
+	private void updateTouch()
 	{
-		if (minion != null && Input.GetMouseButtonUp(0))
+		if (WInput.HasInput() == false)
+			return;
+
+		WHumanInput input = WInput.GetInput();
+
+		if (input.phase == TouchPhase.Stationary)
 		{
-			Debug.Log("create Minion)");
-			Ray ray = Camera.mainCamera.ScreenPointToRay(Input.mousePosition);
+			Ray ray = Camera.mainCamera.ScreenPointToRay(input.position);
+			RaycastHit hitInfo = new RaycastHit();
+
+			if (Physics.Raycast(ray, out hitInfo))
+				generationMinionWithPosition(hitInfo.point);
+		}
+		else if (input.phase == TouchPhase.Began)
+		{
+			Ray ray = Camera.mainCamera.ScreenPointToRay(input.position);
+			RaycastHit hitInfo = new RaycastHit();
+
+			if (Physics.Raycast(ray, out hitInfo))
+				_startRayPosition = hitInfo.point;
+			else
+				_startRayPosition = Vector3.zero;
+		}
+		else if (_startRayPosition != Vector3.zero && input.phase == TouchPhase.Moved)
+		{
+			Ray ray = Camera.mainCamera.ScreenPointToRay(input.position);
 			RaycastHit hitInfo = new RaycastHit();
 
 			if (Physics.Raycast(ray, out hitInfo))
 			{
-				Instantiate(minion, hitInfo.point, transform.rotation);
+				Vector3 newPosition = hitInfo.point;
+
+				Vector3 touchDeltaPosition = newPosition - _startRayPosition;
+				touchDeltaPosition.y = 0;
+				
+				Camera.mainCamera.transform.position -= touchDeltaPosition;
+
+				Debug.Log("camera(" + Camera.mainCamera.transform.position + ") start(" + _startRayPosition + ") new(" + newPosition + ") deltaPosition (" + touchDeltaPosition + ")");
 			}
+
 		}
+
+	}
+
+
+	
+	void generationMinionWithPosition(Vector3 position)
+	{
+		Debug.Log("create Minion)");
+		Instantiate(minion, position, minion.transform.rotation);
 	}
 	
 	void updateGui()
